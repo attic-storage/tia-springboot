@@ -1,0 +1,6 @@
+source 'https://rubygems.org'
+gem 'asciidoctor'
+gem 'tilt'
+gem 'thread_safe'
+gem 'haml'
+gem 'pygments.rb'

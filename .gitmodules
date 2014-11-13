@@ -1,0 +1,6 @@
+[submodule "slides/asciidoctor-backends"]
+	path = slides/asciidoctor-backends
+	url = git://github.com/asciidoctor/asciidoctor-backends.git
+[submodule "slides/deck.js"]
+	path = slides/deck.js
+	url = git://github.com/imakewebthings/deck.js.git

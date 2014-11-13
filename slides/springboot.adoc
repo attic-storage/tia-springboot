@@ -1,0 +1,236 @@
+= Spring Boot
+Romain Lespinasse
+:backend: deckjs
+:deckjs_theme: swiss
+:deckjs_transition: horizontal-slide
+:navigation:
+:menu:
+:status:
+:source-highlighter: pygments
+
+== Spring Framework
+
+Questions pour vous? Lever la main tant que vous vous reconnaissez.
+[options="step"]
+* Qui a déjà fait du `Spring Framework`?
+* Qui a déjà dû configurer une base projet spring?
+* Qui a déjà souffert de cela?
+
+[options="step"]
+--
+*Un remède* : Spring Boot
+--
+
+== Spring Boot in Spring Plateform
+
+image::http://blog.pivotal.io/wp-content/uploads/2013/11/spring-io-platform.jpg[Spring, 1000, 542]
+
+== Spring Boot
+
+Spring Boot vise à simplifier et rendre encore plus rapide la réalisation d’une application spring.
+
+Comment?
+
+[options="step"]
+* Convention over Configuration
+* Support Groovy
+* JavaConfig
+* Starters
+* Production-ready features
+* Embedded server
+* Command Line
+
+== Du Code, Du Code, Du Code
+
+image::http://blog.pivotal.io/wp-content/uploads/2013/11/spring-io-platform.jpg[Spring, 1000, 542]
+
+== Hello World!
+
+[source,java]
+----
+@Controller // <1>
+public class HelloWorldControler {
+
+    @RequestMapping("/") // <2>
+    @ResponseBody
+    String home() {
+        return "Hello World!";
+    }
+}
+----
+<1> Activation du Controller Spring sur cette classe
+<2> Envoi de "Hello World!" quand on accède à http://localhost:8080/
+
+== Hello World! avec Spring Boot
+
+[source,java]
+----
+@Controller
+@EnableAutoConfiguration // <1>
+public class HelloWorldControler {
+
+    @RequestMapping("/")
+    @ResponseBody
+    String home() {
+        return "Hello World!";
+    }
+
+    public static void main(String... args) throws Exception {
+        SpringApplication.run(HelloWorldControler.class, args); // <2>
+    }
+}
+----
+<1> Activation de la configuration automatique (Convention over Configuration)
+<2> Démarrage de l'application (Serveur embarqué)
+
+== Hello ${name}! avec Thymeleaf
+
+Avec le starter `spring-boot-starter-thymeleaf`, spring-boot s'auto-configure en `spring-webmvc` avec un moteur de template : `thymeleaf`
+
+[source,java]
+----
+@Controller
+public class GreetingController {
+
+    @RequestMapping("/greeting")
+    String greeting(
+        @RequestParam(value="name", required=false, defaultValue="World") String name,
+        Model model) {
+        model.addAttribute("name", name);
+        return "greeting"; // <1>
+    }
+}
+----
+<1> Redirige vers une page html utilisant thymeleaf dans `/templates` du classpath
+
+== Demarrage projet : Les starters (1/2)
+
+|===
+| Name | Description
+
+|`spring-boot-starter`
+|The core Spring Boot starter, including auto-configuration support, logging and YAML.
+
+|`spring-boot-starter-actuator`
+|Production ready features to help you monitor and manage your application.
+
+|`spring-boot-starter-batch`
+|Support for "`Spring Batch`" including HSQLDB database.
+
+|`spring-boot-starter-data-jpa`
+|Support for the "`Java Persistence API`" including `spring-data-jpa`, `spring-orm`
+and Hibernate.
+
+|`spring-boot-starter-data-rest`
+|Support for exposing Spring Data repositories over REST via `spring-data-rest-webmvc`.
+
+|`spring-boot-starter-jdbc`
+|Support for JDBC databases.
+|===
+
+== Demarrage projet : Les starters (2/2)
+
+|===
+| Name | Description
+
+|`spring-boot-starter-security`
+|Support for `spring-security`.
+
+|`spring-boot-starter-thymeleaf`
+|Support for the Thymeleaf templating engine, including integration with Spring.
+
+|`spring-boot-starter-web`
+|Support for full-stack web development, including Tomcat and `spring-webmvc`.
+
+|`spring-boot-starter-websocket`
+|Support for websocket development with Tomcat.
+
+|`spring-boot-starter-ws`
+|Support for Spring Web Services
+
+|`Et pleins d'autres`
+|aop, templating engine, test, social, ops, search, nosql, mobile, distributed transactions, integration, JMS
+|===
+
+== Production-Ready : Metrics
+
+Avec *spring-boot-starter-actuator*, vous gagnez (url ou JMX, configurable)
+[cols="1,9"]
+|===
+| ID | Description
+
+|http://localhost:8080/autoconfig[/autoconfig]
+|Displays an auto-configuration report showing all auto-configuration candidates and the
+ reason why they '`were`' or '`were not`' applied.
+
+|http://localhost:8080/beans[/beans]
+|Displays a complete list of all the Spring Beans in your application.
+
+|http://localhost:8080/configprops[/configprops]
+|Displays a collated list of all `@ConfigurationProperties`.
+
+|http://localhost:8080/dump[/dump]
+|Performs a thread dump.
+
+|http://localhost:8080/env[/env]
+|Exposes properties from Spring's `ConfigurableEnvironment`.
+
+|http://localhost:8080/health[/health]
+|Shows application health information (defaulting to a simple '`OK`' message).
+
+|http://localhost:8080/info[/info]
+|Displays arbitrary application info.
+
+|http://localhost:8080/metrics[/metrics]
+|Shows '`metrics`' information for the current application.
+
+|http://localhost:8080/mappings[/mappings]
+|Displays a collated list of all `@RequestMapping` paths.
+
+|http://localhost:8080/shutdown[/shutdown]
+|Allows the application to be gracefully shutdown (not enabled by default).
+
+|http://localhost:8080/trace[/trace]
+|Displays trace information (by default the last few HTTP requests).
+|===
+
+== Production-Ready : Console
+
+image::http://www.crashub.org/images/JVM.png[]
+[source,bash]
+----
+> ssh -p 2000 user@localhost
+----
+
+== Créer son projet Spring-boot
+
+* Avec le site de spring : http://start.spring.io
+* Avec yeoman comme un hipster : https://jhipster.github.io/
+
+image::https://jhipster.github.io/images/logo-jhipster.png[]
+
+== Spring Boot 1.2.0
+
+1.2.0.RC1 disponible http://spring.io/blog/2014/11/12/spring-boot-1-2-0-rc1-available-now
+
+* Tomcat 8 or Jetty 9 as the default embedded servlet container (providing Servlet 3.1 support).
+* A new `@SpringBootApplication` annotation.
+* Access to `start.spring.io` using the spring init CLI command.
+* Email support including a new `spring-boot-starter-mail` "starter POM".
+* Additional health and metrics endpoints.
+
+== Questions?
+
+image::https://binuxlubuntu.files.wordpress.com/2009/10/mao_rtfm_vectorize_by_cmenghi.png[]
+
+== Les liens
+
+http://projects.spring.io/spring-boot/
+
+http://docs.spring.io/spring-boot/docs/1.1.9.RELEASE/reference/htmlsingle/
+
+http://start.spring.io/
+
+https://jhipster.github.io/
+
+http://www.crashub.org
