@@ -234,3 +234,5 @@ http://start.spring.io/
 https://jhipster.github.io/
 
 http://www.crashub.org
+
+https://github.com/rlespinasse/tia-springboot
